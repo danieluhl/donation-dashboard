@@ -6,6 +6,7 @@
 		"useIgnoreFile": true
 	},
 	"files": {
+		"includes": ["**", "!**/fe-take-home-interview-main"],
 		"ignoreUnknown": false
 	},
 	"formatter": {

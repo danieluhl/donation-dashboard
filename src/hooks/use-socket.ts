@@ -1,8 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { z } from "zod";
+import { env } from "@/env";
 
-const DonationMessageSchema = z.object({
+const donationMessageSchema = z.object({
 	type: z.literal("donation"),
 	id: z.uuid().describe("Unique identifier for the donation message"),
 	donorName: z.string().min(1).describe("Name of the donor"),
@@ -13,17 +14,26 @@ const DonationMessageSchema = z.object({
 	timestamp: z.iso.datetime().describe("ISO 8601 formatted timestamp string"),
 });
 
-export type DonationMessage = z.infer<typeof DonationMessageSchema>;
+export type DonationMessage = z.infer<typeof donationMessageSchema>;
 
 export const MESSAGE_QUERY_KEY = ["donation"];
 export const WS_STATUS_QUERY_KEY = ["wsStatus"];
-const WS_URL = "ws://localhost:4000";
 
 export const useSocket = () => {
+	// disable <ScrictMode> for web socket hook
+	// todo: maybe we should pull this out of a hook and into a separate lib
+	//  and put it at the root of the app
+	const isInitialized = useRef(false);
+
 	const queryClient = useQueryClient();
 
 	useEffect(() => {
-		const ws = new WebSocket(WS_URL);
+		if (isInitialized.current) {
+			return;
+		}
+		isInitialized.current = true;
+
+		const ws = new WebSocket(env.VITE_SOCKET_URL);
 
 		ws.onopen = () => {
 			console.log("WS: Connection Established (TanStack Sync) ✅");
@@ -32,14 +42,22 @@ export const useSocket = () => {
 
 		ws.onmessage = (event: MessageEvent) => {
 			try {
-				const newMessage: DonationMessage = JSON.parse(event.data);
+				// TODO: talk to those silly backend devs to figure out why this is double stringified
+				const parsedMessage = JSON.parse(JSON.parse(event.data));
+				console.log("WS: Received message:", parsedMessage);
+				const newMessage: DonationMessage =
+					donationMessageSchema.parse(parsedMessage);
 
 				// **THE CORE LOGIC:** Update the cache directly
 				queryClient.setQueryData<DonationMessage[]>(
 					MESSAGE_QUERY_KEY,
+
 					(oldData) => {
+						console.log(oldData);
 						// If the cache is empty, start with the new message
-						if (!oldData) return [newMessage];
+						if (!oldData) {
+							return [newMessage];
+						}
 						// Otherwise, append the new message to the existing list
 						return [...oldData, newMessage];
 					},
