@@ -44,22 +44,14 @@ export const useSocket = () => {
 			try {
 				// TODO: talk to those silly backend devs to figure out why this is double stringified
 				const parsedMessage = JSON.parse(JSON.parse(event.data));
-				console.log("WS: Received message:", parsedMessage);
 				const newMessage: DonationMessage =
 					donationMessageSchema.parse(parsedMessage);
 
-				// **THE CORE LOGIC:** Update the cache directly
 				queryClient.setQueryData<DonationMessage[]>(
 					MESSAGE_QUERY_KEY,
 
 					(oldData) => {
-						console.log(oldData);
-						// If the cache is empty, start with the new message
-						if (!oldData) {
-							return [newMessage];
-						}
-						// Otherwise, append the new message to the existing list
-						return [...oldData, newMessage];
+						return [...(oldData || []), newMessage];
 					},
 				);
 			} catch (e) {
