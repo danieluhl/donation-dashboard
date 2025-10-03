@@ -1,15 +1,13 @@
-import { useState } from "react";
 import "./App.css";
-import { Button } from "./components/ui/button";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/websocket-client";
+import { Dashboard } from "./pages/dashboard";
 
 function App() {
-	const [count, setCount] = useState(0);
-
 	return (
-		<>
-			<Button onClick={() => setCount(count + 1)}>Click me</Button>
-			<p>You clicked {count} times.</p>
-		</>
+		<QueryClientProvider client={queryClient}>
+			<Dashboard />
+		</QueryClientProvider>
 	);
 }
 
