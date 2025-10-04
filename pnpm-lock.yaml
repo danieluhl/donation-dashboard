@@ -32,6 +32,9 @@ importers:
       '@vitest/browser':
         specifier: ^3.2.4
         version: 3.2.4(playwright@1.55.1)(rolldown-vite@7.1.12(@types/node@24.6.0)(esbuild@0.25.10)(jiti@2.6.0)(tsx@4.20.6))(vitest@3.2.4)
+      canvas-confetti:
+        specifier: ^1.9.3
+        version: 1.9.3
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -962,6 +965,9 @@ packages:
 
   caniuse-lite@1.0.30001746:
     resolution: {integrity: sha512-eA7Ys/DGw+pnkWWSE/id29f2IcPHVoE8wxtvE5JdvD2V28VTDPy1yEeo11Guz0sJ4ZeGRcm3uaTcAqK1LXaphA==}
+
+  canvas-confetti@1.9.3:
+    resolution: {integrity: sha512-rFfTURMvmVEX1gyXFgn5QMn81bYk70qa0HLzcIOSVEyl57n6o9ItHeBtUSWdvKAPY0xlvBHno4/v3QPrT83q9g==}
 
   chai@5.3.3:
     resolution: {integrity: sha512-4zNhdJD/iOjSH0A05ea+Ke6MU5mmpQcbQsSOkgdaUMJ9zTlDTD/GYlwohmIE2u0gaxHYiVHEn1Fw9mZ/ktJWgw==}
@@ -2502,6 +2508,8 @@ snapshots:
   cac@6.7.14: {}
 
   caniuse-lite@1.0.30001746: {}
+
+  canvas-confetti@1.9.3: {}
 
   chai@5.3.3:
     dependencies:

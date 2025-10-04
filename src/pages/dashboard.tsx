@@ -34,7 +34,7 @@ export const Dashboard = () => {
 	const {
 		data: campaign,
 		error: campaignError,
-		// isLoading: isCampaignLoading,
+		isLoading: isCampaignLoading,
 		isError: isCampaignError,
 	} = useCampaign();
 
@@ -48,6 +48,7 @@ export const Dashboard = () => {
 		data: donationMessages = [],
 		error: donationError,
 		isError: isDonationError,
+		isLoading: isDonationLoading,
 	} = useQuery<DonationMessage[]>({
 		queryKey: MESSAGE_QUERY_KEY,
 		queryFn: () => [],
@@ -77,7 +78,7 @@ export const Dashboard = () => {
 			: 100;
 
 	return (
-		<div className="min-h-[100vh] w-full p-[1px] bg-gradient-to-br from-gray-300 to-gray-500">
+		<main className="min-h-[100vh] w-full p-[1px] bg-gradient-to-br from-gray-300 to-gray-500">
 			<section className="min-h-[100vh] p-8 flex flex-col gap-8 h-full w-full bg-gradient-to-br from-blue-600/75 via-indego-900/70 to-violet-800/40">
 				<header className="flex justify-between">
 					<h1 className="text-white text-5xl font-bold">Donation Dashboard</h1>
@@ -95,7 +96,13 @@ export const Dashboard = () => {
 				</header>
 				<Separator className="h-3 bg-border" />
 
-				{campaign && (
+				{isCampaignError && (
+					<p className="text-white text-4xl font-bold">
+						We're having trouble loading this campaign, please refresh the page.
+					</p>
+				)}
+
+				{!isCampaignError && (
 					<>
 						<section className="flex gap-6 w-full">
 							<Card variant="ghost" className="flex-1 text-center">
@@ -106,8 +113,13 @@ export const Dashboard = () => {
 								</CardHeader>
 
 								<CardContent>
-									<p className="text-5xl text-yellow-300 font-bold">
-										{formatCurrency(campaign.goalAmount || 0)}
+									<p
+										data-testid="goal"
+										className="text-5xl text-yellow-300 font-bold"
+									>
+										{!isCampaignLoading && campaign
+											? formatCurrency(campaign.goalAmount || 0)
+											: "Loading..."}
 									</p>
 								</CardContent>
 							</Card>
@@ -122,8 +134,13 @@ export const Dashboard = () => {
 								</CardHeader>
 
 								<CardContent>
-									<p className="text-5xl text-green-300 font-bold">
-										{formatCurrency(totalDonations)}
+									<p
+										data-testid="total-raised"
+										className="text-5xl text-green-300 font-bold"
+									>
+										{!isCampaignLoading && campaign
+											? formatCurrency(totalDonations)
+											: "Loading..."}
 									</p>
 								</CardContent>
 							</Card>
@@ -139,7 +156,11 @@ export const Dashboard = () => {
 
 								<CardContent>
 									<p className="text-5xl text-red-400 font-bold">
-										<TimeRemaining endAt={campaign.endAt} />
+										{!isCampaignLoading && campaign ? (
+											<TimeRemaining endAt={campaign.endAt} />
+										) : (
+											"Loading..."
+										)}
 									</p>
 								</CardContent>
 							</Card>
@@ -164,12 +185,18 @@ export const Dashboard = () => {
 
 								<CardContent className="flex flex-col gap-4">
 									<Progress
+										data-testid="progress-bar"
 										value={donationPercent}
 										className="h-4 bg-white/20 text-blue-600"
 									/>
 									<div className="flex justify-between text-white/80">
 										<p>{formatCurrency(totalDonations)}</p>
-										<p>{formatCurrency(campaign.goalAmount)}</p>
+
+										{!isCampaignLoading && campaign ? (
+											<p>{formatCurrency(campaign.goalAmount)}</p>
+										) : (
+											"Loading..."
+										)}
 									</div>
 								</CardContent>
 							</Card>
@@ -184,16 +211,40 @@ export const Dashboard = () => {
 
 								<CardContent className="px-8">
 									<ul className="flex flex-col gap-6">
+										{isDonationError && (
+											<li>
+												<Card variant="ghost" className="border-[1.5px]">
+													<CardContent className="flex justify-between items-center">
+														We're having trouble loading the donations
+													</CardContent>
+												</Card>
+											</li>
+										)}
+										{isDonationLoading && (
+											<li>
+												<Card variant="ghost" className="border-[1.5px]">
+													<CardContent className="flex justify-between items-center">
+														Loading...
+													</CardContent>
+												</Card>
+											</li>
+										)}
 										{donationMessages.map((donationMessage) => (
-											<li key={donationMessage.id}>
+											<li data-testid="donation-card" key={donationMessage.id}>
 												<Card variant="ghost" className="border-[1.5px]">
 													<CardContent className="flex justify-between items-center">
 														<div className="flex flex-col gap-2">
-															<p className="text-white font-bold text-xl">
+															<p
+																data-testid="user-name"
+																className="text-white font-bold text-xl"
+															>
 																{donationMessage.donorName}
 															</p>
 															{donationMessage.message && (
-																<p className="text-white font-bold text-xl">
+																<p
+																	data-testid="donation-message"
+																	className="text-white font-bold text-xl"
+																>
 																	{donationMessage.message}
 																</p>
 															)}
@@ -201,7 +252,10 @@ export const Dashboard = () => {
 																{formatTime(donationMessage.timestamp)}
 															</p>
 														</div>
-														<p className="text-green-400 text-2xl font-bold">
+														<p
+															data-testid="donation-amount"
+															className="text-green-400 text-2xl font-bold"
+														>
 															{formatCurrency(donationMessage.amount)}
 														</p>
 													</CardContent>
@@ -215,6 +269,6 @@ export const Dashboard = () => {
 					</>
 				)}
 			</section>
-		</div>
+		</main>
 	);
 };

@@ -12,6 +12,7 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:ui": "playwright test --ui",
+		"test:update": "playwright test --update-snapshots --reporter=list",
 		"validate": "run-p build lint test",
 		"coverage": "vitest run --coverage"
 	},
@@ -23,6 +24,7 @@
 		"@tailwindcss/vite": "^4.1.13",
 		"@tanstack/react-query": "^5.90.2",
 		"@vitest/browser": "^3.2.4",
+		"canvas-confetti": "^1.9.3",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"date-fns": "^4.1.0",
