@@ -78,13 +78,13 @@ export const Dashboard = () => {
 			: 100;
 
 	return (
-		<main className="min-h-[100vh] w-full p-[1px] bg-gradient-to-br from-gray-300 to-gray-500">
+		<main className="min-h-[100vh] w-full p-[1px] bg-gradient-to-br from-gray-300 to-gray-500 text-white">
 			<section className="min-h-[100vh] p-8 flex flex-col gap-8 h-full w-full bg-gradient-to-br from-blue-600/75 via-indego-900/70 to-violet-800/40">
 				<header className="flex justify-between">
-					<h1 className="text-white text-5xl font-bold">Donation Dashboard</h1>
+					<h1 className="text-5xl font-bold">Donation Dashboard</h1>
 					<output
 						aria-live="polite"
-						className="rounded-full px-5 py-1 flex items-center gap-2 bg-white/10 text-white font-2xl text-xl font-medium [text-shadow:0_-1px_0_rgba(0,0,0,0.1)]"
+						className="rounded-full px-5 py-1 flex items-center gap-2 bg-white/10 font-2xl text-xl font-medium [text-shadow:0_-1px_0_rgba(0,0,0,0.1)]"
 					>
 						{isConnected ? (
 							<div className="flex items-center">
@@ -109,7 +109,7 @@ export const Dashboard = () => {
 
 				{isCampaignError && (
 					<div role="alert">
-						<p className="text-white text-4xl font-bold">
+						<p className="text-4xl font-bold">
 							We're having trouble loading this campaign, please refresh the
 							page.
 						</p>
@@ -183,9 +183,7 @@ export const Dashboard = () => {
 						<section>
 							<Card variant="ghost" className="border-[1.5px] rounded-2xl">
 								<CardHeader className="px-8 flex justify-between">
-									<h2 className="text-white text-3xl font-bold">
-										Progress to Goal
-									</h2>
+									<h2 className="text-3xl font-bold">Progress to Goal</h2>
 									{donationPercent < 50 && (
 										<div className="text-yellow-400 text-2xl font-bold">
 											{donationPercent}%
@@ -220,9 +218,7 @@ export const Dashboard = () => {
 						<section>
 							<Card className="gap-4 flex flex-col" variant="ghost">
 								<CardHeader className="py-3 px-8 flex justify-between">
-									<h2 className="text-white text-3xl font-bold">
-										Recent Donations
-									</h2>
+									<h2 className="text-3xl font-bold">Recent Donations</h2>
 								</CardHeader>
 
 								<CardContent className="px-8">
@@ -256,14 +252,14 @@ export const Dashboard = () => {
 														<div className="flex flex-col gap-2">
 															<p
 																data-testid="user-name"
-																className="text-white font-bold text-xl"
+																className="font-bold text-xl"
 															>
 																{donationMessage.donorName}
 															</p>
 															{donationMessage.message && (
 																<p
 																	data-testid="donation-message"
-																	className="text-white font-bold text-xl"
+																	className="font-bold text-xl"
 																>
 																	{donationMessage.message}
 																</p>
