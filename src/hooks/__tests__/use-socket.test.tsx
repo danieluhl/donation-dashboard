@@ -59,14 +59,16 @@ describe("useSocket", () => {
 
 		const newMessage = {
 			type: "donation",
-			id: "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+			id: "af7d7705-3aa8-4d45-ae91-aeb7fbfba06d",
 			donorName: "John Doe",
 			amount: 1000,
 			timestamp: new Date().toISOString(),
 		};
 
 		// Simulate receiving a message
-		mockWebSocket.onmessage({ data: JSON.stringify(newMessage) });
+		mockWebSocket.onmessage({
+			data: JSON.stringify(JSON.stringify(newMessage)),
+		});
 
 		await waitFor(() => {
 			const queryClient = wrapper({ children: null }).props.client;
