@@ -12,7 +12,7 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:ui": "playwright test --ui",
-		"test:update": "playwright test --update-snapshots --reporter=list",
+		"test:int": "playwright test --reporter=list",
 		"validate": "run-p build lint test",
 		"coverage": "vitest run --coverage"
 	},

@@ -82,24 +82,38 @@ export const Dashboard = () => {
 			<section className="min-h-[100vh] p-8 flex flex-col gap-8 h-full w-full bg-gradient-to-br from-blue-600/75 via-indego-900/70 to-violet-800/40">
 				<header className="flex justify-between">
 					<h1 className="text-white text-5xl font-bold">Donation Dashboard</h1>
-					<div className="rounded-full px-5 py-1 flex items-center gap-2 bg-white/10 text-white font-2xl text-xl font-medium [text-shadow:0_-1px_0_rgba(0,0,0,0.1)]">
+					<output
+						aria-live="polite"
+						className="rounded-full px-5 py-1 flex items-center gap-2 bg-white/10 text-white font-2xl text-xl font-medium [text-shadow:0_-1px_0_rgba(0,0,0,0.1)]"
+					>
 						{isConnected ? (
-							<div>
-								<span className="pr-3 text-shadow-none">🟢</span>Connected
+							<div className="flex items-center">
+								<span aria-hidden="true" className="pr-3 text-shadow-none">
+									🟢
+								</span>
+								<span className="sr-only">Connection status:</span>
+								Connected
 							</div>
 						) : (
-							<div>
-								<span className="pr-3 text-shadow-none">🔴</span>Disconnected
+							<div className="flex items-center">
+								<span aria-hidden="true" className="pr-3 text-shadow-none">
+									🔴
+								</span>
+								<span className="sr-only">Connection status:</span>
+								Disconnected
 							</div>
 						)}
-					</div>
+					</output>
 				</header>
 				<Separator className="h-3 bg-border" />
 
 				{isCampaignError && (
-					<p className="text-white text-4xl font-bold">
-						We're having trouble loading this campaign, please refresh the page.
-					</p>
+					<div role="alert">
+						<p className="text-white text-4xl font-bold">
+							We're having trouble loading this campaign, please refresh the
+							page.
+						</p>
+					</div>
 				)}
 
 				{!isCampaignError && (
@@ -137,6 +151,7 @@ export const Dashboard = () => {
 									<p
 										data-testid="total-raised"
 										className="text-5xl text-green-300 font-bold"
+										aria-live="polite"
 									>
 										{!isCampaignLoading && campaign
 											? formatCurrency(totalDonations)
@@ -188,6 +203,7 @@ export const Dashboard = () => {
 										data-testid="progress-bar"
 										value={donationPercent}
 										className="h-4 bg-white/20 text-blue-600"
+										aria-label="Donation progress towards goal"
 									/>
 									<div className="flex justify-between text-white/80">
 										<p>{formatCurrency(totalDonations)}</p>
@@ -210,9 +226,13 @@ export const Dashboard = () => {
 								</CardHeader>
 
 								<CardContent className="px-8">
-									<ul className="flex flex-col gap-6">
+									<ul
+										className="flex flex-col gap-6"
+										aria-live="polite"
+										aria-atomic="false"
+									>
 										{isDonationError && (
-											<li>
+											<li role="alert">
 												<Card variant="ghost" className="border-[1.5px]">
 													<CardContent className="flex justify-between items-center">
 														We're having trouble loading the donations
